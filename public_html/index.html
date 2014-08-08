@@ -45,8 +45,31 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <p>View BitBucket Issues Interactively</p>
-        <p><a class="btn btn-primary btn-lg" role="button" id="excel">Export to Excel &raquo;</a></p>
+        <div class="row">
+          <div class="col-sm-3">
+            <img src="img/bitbucket1.png" alt="bitbucket settings" id="bitbucketSettingsImg" />
+          </div>
+          <div class="col-sm-5">
+            <fieldset>
+              <legend>Paste the BitBucket Export JSON Here</legend>
+            <textarea class="form-control" id="bitbucketJSON"></textarea>
+            </fieldset>
+            <br/>
+            <a class="btn btn-primary btn-lg" role="button" id="loadJSON">Load JSON &raquo;</a>
+          </div>
+          <div class="col-sm-4">
+            <p>Steps:</p>
+            <ol>
+              <li>In BitBucket, Go to Settings -> Import &amp; Export.</li>
+              <li>Click on "Start Export".</li>
+              <li>Unzip your zip file, and open the JSON in a text editor.</li>
+              <li>Paste it into the box on the left and click "Load JSON".</li>
+              <li>Once it's loaded, you can export to Excel.</li>
+            </ol>
+          </div>
+
+        </div>
+        
         <div id="dvjson">
         </div>
 
@@ -79,6 +102,11 @@
         </table>
       </div>
 
+      <div class="row">
+        <div class="col-sm-2 col-sm-offset-10">
+            <p><a class="btn btn-info " role="button" id="excel">Export to Excel &raquo;</a></p>
+        </div>
+      </div>
       <hr>
 
       <footer>
@@ -92,68 +120,6 @@
 
     <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
     <script src="js/jquery.battatech.excelexport.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        var issuesJSONObj;
-
-        $.ajax({
-          url: "js/db-1.0.json",
-          cache: false
-        })
-                .done(function(data) {
-                  issuesJSONObj = data;
-                  $('#example').dataTable({
-                    "data": issuesJSONObj.issues,
-                    "columns": [
-                      {"data": "id"},
-                      {"data": "title"},
-                      {"data": "content"},
-                      {"data": "assignee"},
-                      {"data": "kind"},
-                      {"data": "milestone"},
-                      {"data": "priority"},
-                      {"data": "reporter"},
-                      {"data": "status"},
-                      {"data": "version"},
-                      {"data": "component"},
-                      {"data": "edited_on"},
-                      {"data": "updated_on"},
-                      {"data": "content_updated_on"},
-                      {"data": "created_on"}
-                    ]
-                  });
-                });
-
-        $("#excel").click(function() {
-
-
-          $("#dvjson").btechco_excelexport({
-            containerid: "dvjson"
-            , datatype: $datatype.Json
-            , dataset: issuesJSONObj.issues
-            , columns: [
-              {headertext: "id", datafield: "id", ishidden: false},
-              {headertext: "title", datafield: "title", ishidden: false},
-              {headertext: "content", datafield: "content", ishidden: false},
-              {headertext: "assignee", datafield: "assignee", ishidden: false},
-              {headertext: "kind", datafield: "kind", ishidden: false},
-              {headertext: "milestone", datafield: "milestone", ishidden: false},
-              {headertext: "priority", datafield: "priority", ishidden: false},
-              {headertext: "reporter", datafield: "reporter", ishidden: false},
-              {headertext: "status", datafield: "status", ishidden: false},
-              {headertext: "version", datafield: "version", ishidden: false},
-              {headertext: "component", datafield: "component", ishidden: false},
-              {headertext: "edited_on", datafield: "edited_on", ishidden: false},
-              {headertext: "updated_on", datafield: "updated_on", ishidden: false},
-              {headertext: "content_updated_on", datafield: "content_updated_on", ishidden: false},
-              {headertext: "created_on", datafield: "created_on", ishidden: false}
-            ]
-
-          });
-        });
-
-      });
-    </script>
     <script src="js/main.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
