@@ -46,7 +46,10 @@
     <div class="jumbotron">
       <div class="container">
         <p>View BitBucket Issues Interactively</p>
-        <!--<p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>-->
+        <p><a class="btn btn-primary btn-lg" role="button" id="excel">Export to Excel &raquo;</a></p>
+        <div id="dvjson">
+        </div>
+
       </div>
     </div>
 
@@ -79,7 +82,7 @@
       <hr>
 
       <footer>
-        <p>&copy; Company 2014</p>
+        <p>&copy; Mike Cunneen 2014</p>
       </footer>
     </div> <!-- /container -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
@@ -88,15 +91,19 @@
     <script src="js/vendor/bootstrap.min.js"></script>
 
     <script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+    <script src="js/jquery.battatech.excelexport.min.js"></script>
     <script>
       $(document).ready(function() {
+        var issuesJSONObj;
+
         $.ajax({
           url: "js/db-1.0.json",
           cache: false
         })
                 .done(function(data) {
+                  issuesJSONObj = data;
                   $('#example').dataTable({
-                    "data": data.issues,
+                    "data": issuesJSONObj.issues,
                     "columns": [
                       {"data": "id"},
                       {"data": "title"},
@@ -117,6 +124,33 @@
                   });
                 });
 
+        $("#excel").click(function() {
+
+
+          $("#dvjson").btechco_excelexport({
+            containerid: "dvjson"
+            , datatype: $datatype.Json
+            , dataset: issuesJSONObj.issues
+            , columns: [
+              {headertext: "id", datafield: "id", ishidden: false},
+              {headertext: "title", datafield: "title", ishidden: false},
+              {headertext: "content", datafield: "content", ishidden: false},
+              {headertext: "assignee", datafield: "assignee", ishidden: false},
+              {headertext: "kind", datafield: "kind", ishidden: false},
+              {headertext: "milestone", datafield: "milestone", ishidden: false},
+              {headertext: "priority", datafield: "priority", ishidden: false},
+              {headertext: "reporter", datafield: "reporter", ishidden: false},
+              {headertext: "status", datafield: "status", ishidden: false},
+              {headertext: "version", datafield: "version", ishidden: false},
+              {headertext: "component", datafield: "component", ishidden: false},
+              {headertext: "edited_on", datafield: "edited_on", ishidden: false},
+              {headertext: "updated_on", datafield: "updated_on", ishidden: false},
+              {headertext: "content_updated_on", datafield: "content_updated_on", ishidden: false},
+              {headertext: "created_on", datafield: "created_on", ishidden: false}
+            ]
+
+          });
+        });
 
       });
     </script>
