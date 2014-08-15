@@ -67,7 +67,7 @@ $(document).ready(function() {
     }));
     a.innerHTML = "Download me";
     if (a.download === undefined) {
-      $('#modalExcelDiv').remove("a");
+      $('#modalExcelDiv a#downloadLink').remove();
       a.setAttribute("download", "issues_" + currentTimeString + ".xls");
       $('#modalExcelDiv').get(0).appendChild(a);
       $('#modalExcel').modal('show');
