@@ -37,7 +37,6 @@ $(document).ready(function() {
     var currentTimeString = "" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "_" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
     
     var a = document.createElement("A");
-    a.setAttribute("download","issues_" + currentTimeString + ".xls");
     a.setAttribute("id","downloadLink");
     
     
@@ -67,6 +66,10 @@ $(document).ready(function() {
     }) );
     document.body.appendChild(a);
     a.innerHTML = "Download me";
+    if (a.download === undefined) {
+      alert("You'll need to rename the downloaded file to have a .xls extension.\nNext time, use Google Chrome and you won't have to do that.");
+    }
+    a.setAttribute("download","issues_" + currentTimeString + ".xls");
     a.click();
     
     document.body.removeChild(a);
