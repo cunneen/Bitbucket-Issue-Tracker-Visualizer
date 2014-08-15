@@ -1,11 +1,12 @@
 $(document).ready(function() {
   var issuesJSONObj;
 
-
+  $("#excel").addClass("hidden");
 
   $("#loadJSON").click(function() {
     try {
       issuesJSONObj = JSON.parse($("#bitbucketJSON").get(0).value);
+    $("#excel").removeClass("hidden");
     } catch (e) {
       alert("Couldn't parse JSON: \n" + e);
     }
@@ -32,12 +33,19 @@ $(document).ready(function() {
   });
 
   $("#excel").click(function() {
-    alert("You'll have to rename the downloaded file to have a .xls extension.");
-
-    $("#dvjson").btechco_excelexport({
+    var d = new Date();
+    var currentTimeString = "" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "_" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+    
+    var a = document.createElement("A");
+    a.setAttribute("download","issues_" + currentTimeString + ".xls");
+    a.setAttribute("id","downloadLink");
+    
+    
+    a.setAttribute("href",$("#dvjson").btechco_excelexport({
       containerid: "dvjson"
       , datatype: $datatype.Json
       , dataset: issuesJSONObj.issues
+      , returnUri: true
       , columns: [
         {headertext: "id", datafield: "id", ishidden: false},
         {headertext: "title", datafield: "title", ishidden: false},
@@ -56,7 +64,12 @@ $(document).ready(function() {
         {headertext: "created_on", datafield: "created_on", ishidden: false}
       ]
 
-    });
+    }) );
+    document.body.appendChild(a);
+    a.innerHTML = "Download me";
+    a.click();
+    
+    document.body.removeChild(a);
   });
 
 });
