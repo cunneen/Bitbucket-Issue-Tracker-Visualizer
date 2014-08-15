@@ -6,7 +6,7 @@ $(document).ready(function() {
   $("#loadJSON").click(function() {
     try {
       issuesJSONObj = JSON.parse($("#bitbucketJSON").get(0).value);
-    $("#excel").removeClass("hidden");
+      $("#excel").removeClass("hidden");
     } catch (e) {
       alert("Couldn't parse JSON: \n" + e);
     }
@@ -34,13 +34,14 @@ $(document).ready(function() {
 
   $("#excel").click(function() {
     var d = new Date();
-    var currentTimeString = "" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "_" + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
-    
+    var t = d.toTimeString().substring(0, 8).replace(/:/g, "-"); // time component.
+    var currentTimeString = "" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "_" + t;
+
     var a = document.createElement("A");
-    a.setAttribute("id","downloadLink");
-    
-    
-    a.setAttribute("href",$("#dvjson").btechco_excelexport({
+    a.setAttribute("id", "downloadLink");
+
+
+    a.setAttribute("href", $("#dvjson").btechco_excelexport({
       containerid: "dvjson"
       , datatype: $datatype.Json
       , dataset: issuesJSONObj.issues
@@ -63,16 +64,19 @@ $(document).ready(function() {
         {headertext: "created_on", datafield: "created_on", ishidden: false}
       ]
 
-    }) );
-    document.body.appendChild(a);
+    }));
     a.innerHTML = "Download me";
     if (a.download === undefined) {
-      alert("You'll need to rename the downloaded file to have a .xls extension.\nNext time, use Google Chrome and you won't have to do that.");
+      $('#modalExcelDiv').remove("a");
+      a.setAttribute("download", "issues_" + currentTimeString + ".xls");
+      $('#modalExcelDiv').get(0).appendChild(a);
+      $('#modalExcel').modal('show');
+    } else {
+      a.setAttribute("download", "issues_" + currentTimeString + ".xls");
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
-    a.setAttribute("download","issues_" + currentTimeString + ".xls");
-    a.click();
-    
-    document.body.removeChild(a);
   });
 
 });
