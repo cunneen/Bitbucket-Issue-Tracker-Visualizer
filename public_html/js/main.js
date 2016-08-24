@@ -4,6 +4,7 @@ $(document).ready(function() {
   $("#excel").addClass("hidden");
 
   $("#loadJSON").click(function() {
+    if (ga) ga('send', 'event', 'exportJSON', 'click', 'Export JSON', 1);
     try {
       issuesJSONObj = JSON.parse($("#bitbucketJSON").get(0).value);
       $("#excel").removeClass("hidden");
@@ -33,6 +34,7 @@ $(document).ready(function() {
   });
 
   $("#excel").click(function() {
+    if (ga) ga('send', 'event', 'exportExcel', 'click', 'Export Excel', 1);
     var d = new Date();
     var t = d.toTimeString().substring(0, 8).replace(/:/g, "-"); // time component.
     var currentTimeString = "" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "_" + t;
